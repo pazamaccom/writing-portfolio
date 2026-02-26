@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "title": "Sample Poem",
+    "category": "poetry",
+    "tags": ["sample"],
+    "date": "2026-02-26",
+    "body": "This is a placeholder.\nReplace with your actual poem."
+  },
+  {
+    "id": 2,
+    "title": "Sample Opinion Piece",
+    "category": "opinion",
+    "tags": ["sample"],
+    "date": "2026-02-26",
+    "body": "This is a placeholder. Replace with your actual opinion piece."
+  }
+]

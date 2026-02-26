@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Writing Portfolio</title>
+  <link rel="stylesheet" href="./style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <h1 class="site-title">The Written Word</h1>
+    <p class="site-subtitle">Poetry &middot; Opinion &middot; Essays</p>
+  </header>
+
+  <!-- Filter Bar -->
+  <nav class="filter-bar">
+    <button class="filter-btn active" data-category="all">All</button>
+    <button class="filter-btn" data-category="poetry">Poetry</button>
+    <button class="filter-btn" data-category="opinion">Opinion</button>
+    <button class="filter-btn" data-category="essay">Essays</button>
+    <button class="filter-btn" data-category="prose">Prose</button>
+  </nav>
+
+  <!-- Magazine Feed -->
+  <main class="feed" id="feed">
+    <!-- Pieces injected by app.js -->
+  </main>
+
+  <!-- Overlay for reading a piece -->
+  <div class="reader-overlay" id="readerOverlay">
+    <div class="reader-content">
+      <button class="reader-close" id="readerClose">&times;</button>
+      <span class="reader-category" id="readerCategory"></span>
+      <h2 class="reader-title" id="readerTitle"></h2>
+      <time class="reader-date" id="readerDate"></time>
+      <div class="reader-body" id="readerBody"></div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>&copy; 2026. All rights reserved.</p>
+  </footer>
+
+  <script src="./app.js"></script>
+</body>
+</html>
