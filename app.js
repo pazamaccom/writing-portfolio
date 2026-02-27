@@ -15,6 +15,7 @@
         Poetry: '#e6356f',    // magenta
         Opinion: '#f59e42',   // orange
         Essays: '#2dd4bf',    // teal
+        Prose: '#fbbf24',     // gold
     };
 
     // ---- DOM refs ----

@@ -17,6 +17,7 @@
     --color-poetry: var(--accent-magenta);
     --color-opinion: var(--accent-orange);
     --color-essays: var(--accent-teal);
+    --color-prose: var(--accent-gold);
 
     --font-display: 'Playfair Display', Georgia, serif;
     --font-body: 'Source Sans 3', 'Source Sans Pro', sans-serif;
