@@ -1,50 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Writing Portfolio</title>
-  <link rel="stylesheet" href="./style.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Isabella Zapparoli — Poetry · Opinion · Essays</title>
+    <meta name="description" content="Writing portfolio of Isabella Zapparoli — poetry, opinion pieces, and essays.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-  <!-- Header -->
-  <header class="site-header">
-    <h1 class="site-title">The Written Word</h1>
-    <p class="site-subtitle">Poetry &middot; Opinion &middot; Essays</p>
-  </header>
 
-  <!-- Filter Bar -->
-  <nav class="filter-bar">
-    <button class="filter-btn active" data-category="all">All</button>
-    <button class="filter-btn" data-category="poetry">Poetry</button>
-    <button class="filter-btn" data-category="opinion">Opinion</button>
-    <button class="filter-btn" data-category="essay">Essays</button>
-    <button class="filter-btn" data-category="prose">Prose</button>
-  </nav>
+    <!-- Hero -->
+    <header class="hero">
+        <div class="hero-inner">
+            <h1 class="hero-title">Isabella Zapparoli</h1>
+            <p class="hero-subtitle">Poetry · Opinion · Essays</p>
+        </div>
+        <div class="hero-decoration" aria-hidden="true">
+            <span class="deco-line deco-line--1"></span>
+            <span class="deco-line deco-line--2"></span>
+            <span class="deco-line deco-line--3"></span>
+        </div>
+    </header>
 
-  <!-- Magazine Feed -->
-  <main class="feed" id="feed">
-    <!-- Pieces injected by app.js -->
-  </main>
+    <!-- Sticky Filter Bar -->
+    <nav class="filter-bar" id="filterBar">
+        <div class="filter-bar-inner">
+            <button class="filter-btn active" data-filter="All">All</button>
+            <button class="filter-btn" data-filter="Poetry">Poetry</button>
+            <button class="filter-btn" data-filter="Opinion">Opinion</button>
+            <button class="filter-btn" data-filter="Essays">Essays</button>
+        </div>
+    </nav>
 
-  <!-- Overlay for reading a piece -->
-  <div class="reader-overlay" id="readerOverlay">
-    <div class="reader-content">
-      <button class="reader-close" id="readerClose">&times;</button>
-      <span class="reader-category" id="readerCategory"></span>
-      <h2 class="reader-title" id="readerTitle"></h2>
-      <time class="reader-date" id="readerDate"></time>
-      <div class="reader-body" id="readerBody"></div>
+    <!-- Card Grid -->
+    <main class="grid-container" id="gridContainer">
+        <div class="card-grid" id="cardGrid">
+            <!-- Cards injected by JS -->
+        </div>
+        <div class="no-results" id="noResults" style="display:none;">
+            <p>No pieces in this category yet.</p>
+        </div>
+    </main>
+
+    <!-- Reader Overlay -->
+    <div class="reader-overlay" id="readerOverlay" aria-hidden="true">
+        <div class="reader-backdrop" id="readerBackdrop"></div>
+        <div class="reader-panel" id="readerPanel">
+            <button class="reader-close" id="readerClose" aria-label="Close reader">
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                    <line x1="6" y1="6" x2="22" y2="22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="22" y1="6" x2="6" y2="22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+            <div class="reader-content" id="readerContent">
+                <!-- Filled by JS -->
+            </div>
+        </div>
     </div>
-  </div>
 
-  <footer class="site-footer">
-    <p>&copy; 2026. All rights reserved.</p>
-  </footer>
+    <!-- Footer -->
+    <footer class="site-footer">
+        <p>&copy; 2026 Isabella Zapparoli. All rights reserved.</p>
+    </footer>
 
-  <script src="./app.js"></script>
+    <script src="./app.js"></script>
 </body>
 </html>
