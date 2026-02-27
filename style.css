@@ -1,2 +1,680 @@
-/* see deployed site for full CSS */
-/* This file is managed via the deployed site build */
+/* ========================================
+   VARIABLES & RESET
+   ======================================== */
+:root {
+    --bg: #0d0d0d;
+    --bg-elevated: #161616;
+    --bg-card: #1a1a1a;
+    --text-primary: #f0ece4;
+    --text-secondary: #a8a29e;
+    --text-muted: #6b6560;
+
+    --accent-magenta: #e6356f;
+    --accent-orange: #f59e42;
+    --accent-teal: #2dd4bf;
+    --accent-gold: #fbbf24;
+
+    --color-poetry: var(--accent-magenta);
+    --color-opinion: var(--accent-orange);
+    --color-essays: var(--accent-teal);
+
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'Source Sans 3', 'Source Sans Pro', sans-serif;
+
+    --radius: 8px;
+    --radius-lg: 16px;
+    --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-spring: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+::selection {
+    background: var(--accent-magenta);
+    color: #fff;
+}
+
+/* ========================================
+   HERO
+   ======================================== */
+.hero {
+    position: relative;
+    padding: 120px 24px 80px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.hero-inner {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-title {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, var(--accent-magenta), var(--accent-orange) 40%, var(--accent-gold) 70%, var(--accent-teal));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    padding-bottom: 8px;
+    animation: heroFadeIn 1s ease-out both;
+}
+
+.hero-subtitle {
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-size: clamp(1rem, 2.5vw, 1.35rem);
+    color: var(--text-secondary);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-top: 16px;
+    animation: heroFadeIn 1s 0.25s ease-out both;
+}
+
+/* Decorative lines */
+.hero-decoration {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.deco-line {
+    position: absolute;
+    background: linear-gradient(90deg, transparent, var(--accent-magenta), transparent);
+    opacity: 0.08;
+}
+
+.deco-line--1 {
+    top: 30%;
+    left: -10%;
+    width: 120%;
+    height: 1px;
+    transform: rotate(-3deg);
+}
+
+.deco-line--2 {
+    top: 55%;
+    left: -5%;
+    width: 110%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-orange), transparent);
+    transform: rotate(2deg);
+}
+
+.deco-line--3 {
+    top: 78%;
+    left: -8%;
+    width: 115%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-teal), transparent);
+    transform: rotate(-1.5deg);
+}
+
+@keyframes heroFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========================================
+   FILTER BAR
+   ======================================== */
+.filter-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 0 24px;
+    background: rgba(13, 13, 13, 0.7);
+    backdrop-filter: blur(20px) saturate(1.5);
+    -webkit-backdrop-filter: blur(20px) saturate(1.5);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    transition: box-shadow var(--transition);
+}
+
+.filter-bar.scrolled {
+    box-shadow: 0 4px 30px rgba(0,0,0,0.5);
+}
+
+.filter-bar-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    gap: 8px;
+    padding: 16px 0;
+    overflow-x: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.filter-bar-inner::-webkit-scrollbar {
+    display: none;
+}
+
+.filter-btn {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 10px 24px;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 100px;
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--transition);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.filter-btn:hover {
+    border-color: rgba(255,255,255,0.25);
+    color: var(--text-primary);
+    background: rgba(255,255,255,0.04);
+}
+
+.filter-btn.active {
+    background: var(--text-primary);
+    color: var(--bg);
+    border-color: var(--text-primary);
+}
+
+/* ========================================
+   CARD GRID
+   ======================================== */
+.grid-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+    min-height: 50vh;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 28px;
+}
+
+.no-results {
+    text-align: center;
+    padding: 80px 24px;
+}
+
+.no-results p {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-style: italic;
+    color: var(--text-muted);
+}
+
+/* ========================================
+   CARDS
+   ======================================== */
+.card {
+    position: relative;
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform var(--transition), box-shadow var(--transition);
+    /* Staggered entrance animation */
+    opacity: 0;
+    transform: translateY(40px);
+    animation: cardEnter 0.6s ease-out forwards;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+}
+
+.card:active {
+    transform: translateY(-2px) scale(0.995);
+}
+
+/* Color top border per category */
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--card-accent);
+}
+
+.card-inner {
+    padding: 28px 28px 24px;
+}
+
+.card-category {
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--card-accent);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.card-category::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--card-accent);
+    flex-shrink: 0;
+}
+
+.card-title {
+    font-family: var(--font-display);
+    font-size: 1.55rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+    transition: color var(--transition);
+}
+
+.card:hover .card-title {
+    color: #fff;
+}
+
+.card-subtitle {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-style: italic;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+}
+
+.card-excerpt {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 12px;
+}
+
+.card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    flex: 1;
+}
+
+.card-tag {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    padding: 4px 10px;
+    border-radius: 100px;
+    background: rgba(255,255,255,0.06);
+    color: var(--text-muted);
+    transition: background var(--transition), color var(--transition);
+}
+
+.card:hover .card-tag {
+    background: rgba(255,255,255,0.1);
+    color: var(--text-secondary);
+}
+
+.card-date {
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* Card entrance animation */
+@keyframes cardEnter {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========================================
+   READER OVERLAY
+   ======================================== */
+.reader-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+}
+
+.reader-overlay.open {
+    pointer-events: auto;
+    opacity: 1;
+}
+
+.reader-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.reader-panel {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 720px;
+    background: var(--bg-elevated);
+    overflow-y: auto;
+    padding: 72px 56px 80px;
+    transform: translateY(30px);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reader-overlay.open .reader-panel {
+    transform: translateY(0);
+}
+
+.reader-close {
+    position: fixed;
+    top: 20px;
+    right: 24px;
+    z-index: 10;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 50%;
+    background: rgba(13, 13, 13, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+.reader-close:hover {
+    color: #fff;
+    border-color: rgba(255,255,255,0.35);
+    background: rgba(230, 53, 111, 0.3);
+}
+
+/* Reader content styling */
+.reader-header {
+    margin-bottom: 48px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.reader-category {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.reader-category::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.reader-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    line-height: 1.15;
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+.reader-subtitle-text {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--text-muted);
+    margin-top: 8px;
+}
+
+.reader-author {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-top: 12px;
+}
+
+.reader-submitted {
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    margin-top: 8px;
+    font-style: italic;
+}
+
+.reader-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.reader-tag {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    padding: 5px 14px;
+    border-radius: 100px;
+    background: rgba(255,255,255,0.06);
+    color: var(--text-muted);
+}
+
+/* Poetry body: preserve line breaks */
+.reader-body {
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    line-height: 1.85;
+    color: var(--text-primary);
+}
+
+.reader-body.poetry {
+    white-space: pre-wrap;
+    font-size: 1.05rem;
+    line-height: 1.8;
+}
+
+/* Prose (opinion/essay) styling */
+.reader-body.prose p {
+    margin-bottom: 1.5em;
+    text-indent: 0;
+}
+
+.reader-body.prose p:first-child {
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: #fff;
+}
+
+/* ========================================
+   FOOTER
+   ======================================== */
+.site-footer {
+    text-align: center;
+    padding: 48px 24px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.site-footer p {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    letter-spacing: 0.03em;
+}
+
+/* ========================================
+   SCROLLBAR
+   ======================================== */
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.12);
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+@media (max-width: 768px) {
+    .hero {
+        padding: 80px 20px 60px;
+    }
+
+    .card-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .card-inner {
+        padding: 22px 22px 20px;
+    }
+
+    .card-title {
+        font-size: 1.3rem;
+    }
+
+    .reader-panel {
+        padding: 56px 28px 60px;
+    }
+
+    .reader-title {
+        font-size: 1.8rem;
+    }
+
+    .reader-close {
+        top: 12px;
+        right: 12px;
+        width: 42px;
+        height: 42px;
+    }
+
+    .filter-bar-inner {
+        padding: 12px 0;
+    }
+
+    .filter-btn {
+        padding: 8px 18px;
+        font-size: 0.82rem;
+    }
+
+    .grid-container {
+        padding: 32px 16px 60px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero {
+        padding: 64px 16px 48px;
+    }
+
+    .hero-subtitle {
+        font-size: 0.85rem;
+        letter-spacing: 0.15em;
+    }
+
+    .card-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ========================================
+   BODY SCROLL LOCK (when reader open)
+   ======================================== */
+body.reader-open {
+    overflow: hidden;
+}
+
+/* ========================================
+   GRAIN OVERLAY for atmosphere
+   ======================================== */
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 256px 256px;
+}
