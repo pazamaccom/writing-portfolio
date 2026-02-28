@@ -1,72 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Isabella Zapparoli — Poetry · Opinion · Essays</title>
-    <meta name="description" content="Writing portfolio of Isabella Zapparoli — poetry, opinion pieces, and essays.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Isabella Zapparoli — Writer, Poet, and Storyteller</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
 </head>
 <body>
 
-    <!-- Hero -->
-    <header class="hero">
-        <div class="hero-inner">
-            <h1 class="hero-title">Isabella Zapparoli</h1>
-            <p class="hero-subtitle">Poetry · Opinion · Essays</p>
-        </div>
-        <div class="hero-decoration" aria-hidden="true">
-            <span class="deco-line deco-line--1"></span>
-            <span class="deco-line deco-line--2"></span>
-            <span class="deco-line deco-line--3"></span>
-        </div>
-    </header>
-
-    <!-- Sticky Filter Bar -->
-    <nav class="filter-bar" id="filterBar">
-        <div class="filter-bar-inner">
-            <button class="filter-btn active" data-filter="All">All</button>
-            <button class="filter-btn" data-filter="Poetry">Poetry</button>
-            <button class="filter-btn" data-filter="Opinion">Opinion</button>
-            <button class="filter-btn" data-filter="Essays">Essays</button>
-            <button class="filter-btn" data-filter="Prose">Prose</button>
-        </div>
-    </nav>
-
-    <!-- Card Grid -->
-    <main class="grid-container" id="gridContainer">
-        <div class="card-grid" id="cardGrid">
-            <!-- Cards injected by JS -->
-        </div>
-        <div class="no-results" id="noResults" style="display:none;">
-            <p>No pieces in this category yet.</p>
-        </div>
-    </main>
-
-    <!-- Reader Overlay -->
-    <div class="reader-overlay" id="readerOverlay" aria-hidden="true">
-        <div class="reader-backdrop" id="readerBackdrop"></div>
-        <div class="reader-panel" id="readerPanel">
-            <button class="reader-close" id="readerClose" aria-label="Close reader">
-                <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-                    <line x1="6" y1="6" x2="22" y2="22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    <line x1="22" y1="6" x2="6" y2="22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-            </button>
-            <div class="reader-content" id="readerContent">
-                <!-- Filled by JS -->
-            </div>
-        </div>
+  <!-- TOP NAV BAR -->
+  <nav class="top-nav" id="topNav">
+    <div class="nav-inner">
+      <a href="#" class="nav-brand" data-filter="all">Isabella Zapparoli</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#" class="nav-link active" data-filter="all">Home</a></li>
+        <li><a href="#" class="nav-link" data-filter="Poetry">Poetry</a></li>
+        <li><a href="#" class="nav-link" data-filter="Opinion">Opinion</a></li>
+        <li><a href="#" class="nav-link" data-filter="Prose">Prose</a></li>
+      </ul>
     </div>
+  </nav>
 
-    <!-- Footer -->
-    <footer class="site-footer">
-        <p>&copy; 2026 Isabella Zapparoli. All rights reserved.</p>
-    </footer>
+  <!-- HERO SECTION -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-ornament">✦</div>
+      <h1 class="hero-title">Writer, Poet, and Storyteller</h1>
+      <p class="hero-tagline">Poetry · Opinion · Prose</p>
+      <div class="hero-line"></div>
+    </div>
+  </header>
 
-    <script src="./app.js"></script>
+  <!-- CATEGORY NAVIGATION CARDS -->
+  <section class="category-cards">
+    <div class="category-cards-inner">
+      <button class="cat-card cat-card--poetry" data-filter="Poetry">
+        <div class="cat-card-overlay"></div>
+        <div class="cat-card-content">
+          <span class="cat-card-icon">✧</span>
+          <span class="cat-card-label">Poetry</span>
+          <span class="cat-card-count" id="countPoetry">0 pieces</span>
+        </div>
+      </button>
+      <button class="cat-card cat-card--opinion" data-filter="Opinion">
+        <div class="cat-card-overlay"></div>
+        <div class="cat-card-content">
+          <span class="cat-card-icon">◆</span>
+          <span class="cat-card-label">Opinion</span>
+          <span class="cat-card-count" id="countOpinion">0 pieces</span>
+        </div>
+      </button>
+      <button class="cat-card cat-card--prose" data-filter="Prose">
+        <div class="cat-card-overlay"></div>
+        <div class="cat-card-content">
+          <span class="cat-card-icon">▬</span>
+          <span class="cat-card-label">Prose</span>
+          <span class="cat-card-count" id="countProse">0 pieces</span>
+        </div>
+      </button>
+    </div>
+  </section>
+
+  <!-- ACTIVE FILTER INDICATOR -->
+  <div class="filter-indicator" id="filterIndicator" style="display:none;">
+    <div class="filter-indicator-inner">
+      <span class="filter-indicator-text">Showing: <strong id="filterLabel"></strong></span>
+      <button class="filter-clear" id="filterClear">Show All ×</button>
+    </div>
+  </div>
+
+  <!-- WRITING FEED -->
+  <main class="feed">
+    <div class="feed-grid" id="feedGrid">
+      <!-- Cards injected by JS -->
+    </div>
+    <p class="feed-empty" id="feedEmpty" style="display:none;">No pieces found in this category.</p>
+  </main>
+
+  <!-- READER OVERLAY -->
+  <div class="reader-overlay" id="readerOverlay">
+    <div class="reader-backdrop" id="readerBackdrop"></div>
+    <div class="reader-panel" id="readerPanel">
+      <button class="reader-close" id="readerClose" aria-label="Close">×</button>
+      <div class="reader-content" id="readerContent">
+        <!-- Filled by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-ornament">✦</div>
+      <p>© 2026 Isabella Zapparoli</p>
+    </div>
+  </footer>
+
+  <script src="./app.js"></script>
 </body>
 </html>
