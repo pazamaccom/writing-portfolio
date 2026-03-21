@@ -16,10 +16,10 @@
   --accent:        #c4956a;
   --accent-hover:  #b07d52;
 
-  --poetry:        #7ab87a;
-  --prose:         #a0956a;
-  --opinion:       #b87a5a;
-  --essays:        #8a5a3a;
+  --poetry:        #4a8a4a;
+  --prose:         #7a6d3a;
+  --opinion:       #9a5a30;
+  --essays:        #6a3a1a;
 
   --font-display:  'Cormorant Garamond', 'Georgia', serif;
   --font-body:     'Source Sans 3', 'Segoe UI', sans-serif;
@@ -231,33 +231,33 @@ body {
   opacity: 0.85;
 }
 
-/* Category card backgrounds — rainbow sequence: green → tan → brown → dark brown */
+/* Category card backgrounds — rainbow sequence: green → olive/tan → brown → dark brown */
 .cat-card--poetry {
-  background: linear-gradient(135deg, #6aad6a 0%, #7ab87a 50%, #8fc98f 100%);
+  background: linear-gradient(135deg, #4a8a4a 0%, #5e9e5e 50%, #72b272 100%);
 }
 .cat-card--poetry .cat-card-overlay {
-  background: linear-gradient(135deg, rgba(106, 173, 106, 0.15), rgba(143, 201, 143, 0.1));
+  background: linear-gradient(135deg, rgba(74, 138, 74, 0.15), rgba(114, 178, 114, 0.1));
 }
 
 .cat-card--prose {
-  background: linear-gradient(135deg, #8a7d5a 0%, #a0956a 40%, #b8ad82 100%);
+  background: linear-gradient(135deg, #6a5d2a 0%, #7a6d3a 40%, #948750 100%);
 }
 .cat-card--prose .cat-card-overlay {
-  background: linear-gradient(135deg, rgba(138, 125, 90, 0.15), rgba(160, 149, 106, 0.1));
+  background: linear-gradient(135deg, rgba(106, 93, 42, 0.15), rgba(122, 109, 58, 0.1));
 }
 
 .cat-card--opinion {
-  background: linear-gradient(135deg, #9a6040 0%, #b87a5a 40%, #c99470 100%);
+  background: linear-gradient(135deg, #7a4a20 0%, #9a5a30 40%, #b06a3a 100%);
 }
 .cat-card--opinion .cat-card-overlay {
-  background: linear-gradient(135deg, rgba(154, 96, 64, 0.15), rgba(184, 122, 90, 0.1));
+  background: linear-gradient(135deg, rgba(122, 74, 32, 0.15), rgba(154, 90, 48, 0.1));
 }
 
 .cat-card--essay {
-  background: linear-gradient(135deg, #6a4020 0%, #8a5a3a 40%, #a07050 100%);
+  background: linear-gradient(135deg, #4a2a10 0%, #6a3a1a 40%, #804a28 100%);
 }
 .cat-card--essay .cat-card-overlay {
-  background: linear-gradient(135deg, rgba(106, 64, 32, 0.15), rgba(138, 90, 58, 0.1));
+  background: linear-gradient(135deg, rgba(74, 42, 16, 0.15), rgba(106, 58, 26, 0.1));
 }
 
 .cat-card-content {
@@ -483,6 +483,8 @@ body {
   padding: 3px 10px;
   border-radius: 12px;
   letter-spacing: 0.03em;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .piece-card-date {
@@ -729,6 +731,16 @@ body.overlay-open {
 /* =====================================================
    RESPONSIVE
    ===================================================== */
+
+@media (max-width: 1024px) {
+  .category-cards-inner {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .cat-card {
+    height: 130px;
+  }
+}
 
 @media (max-width: 768px) {
   .nav-toggle {
