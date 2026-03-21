@@ -253,6 +253,13 @@ body {
   background: linear-gradient(135deg, rgba(92, 61, 46, 0.15), rgba(107, 66, 38, 0.1));
 }
 
+.cat-card--essay {
+  background: linear-gradient(135deg, #5f8a5f 0%, #7aa37a 40%, #8fbc8f 100%);
+}
+.cat-card--essay .cat-card-overlay {
+  background: linear-gradient(135deg, rgba(95, 138, 95, 0.15), rgba(143, 188, 143, 0.1));
+}
+
 .cat-card-content {
   position: relative;
   z-index: 2;
@@ -410,6 +417,7 @@ body {
 .piece-card-dot--Poetry { background: var(--poetry); }
 .piece-card-dot--Opinion { background: var(--opinion); }
 .piece-card-dot--Prose { background: var(--prose); }
+.piece-card-dot--Essay { background: var(--essays); }
 
 .piece-card-category {
   font-family: var(--font-body);
@@ -422,6 +430,7 @@ body {
 .piece-card-category--Poetry { color: var(--poetry); }
 .piece-card-category--Opinion { color: var(--opinion); }
 .piece-card-category--Prose { color: var(--prose); }
+.piece-card-category--Essay { color: var(--essays); }
 
 .piece-card-title {
   font-family: var(--font-display);
@@ -568,6 +577,7 @@ body {
 .reader-cat-dot--Poetry { background: var(--poetry); }
 .reader-cat-dot--Opinion { background: var(--opinion); }
 .reader-cat-dot--Prose { background: var(--prose); }
+.reader-cat-dot--Essay { background: var(--essays); }
 
 .reader-category {
   font-family: var(--font-body);
@@ -580,6 +590,7 @@ body {
 .reader-category--Poetry { color: var(--poetry); }
 .reader-category--Opinion { color: var(--opinion); }
 .reader-category--Prose { color: var(--prose); }
+.reader-category--Essay { color: var(--essays); }
 
 .reader-date {
   font-size: 0.78rem;

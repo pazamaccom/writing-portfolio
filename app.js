@@ -26,6 +26,7 @@
   const countPoetry     = document.getElementById('countPoetry');
   const countOpinion    = document.getElementById('countOpinion');
   const countProse      = document.getElementById('countProse');
+  const countEssay      = document.getElementById('countEssay');
 
   // --- Load Pieces ---
   async function loadPieces() {
@@ -42,13 +43,14 @@
 
   // --- Update category counts ---
   function updateCounts() {
-    const counts = { Poetry: 0, Opinion: 0, Prose: 0 };
+    const counts = { Poetry: 0, Opinion: 0, Prose: 0, Essay: 0 };
     pieces.forEach(p => {
       if (counts[p.category] !== undefined) counts[p.category]++;
     });
     countPoetry.textContent = counts.Poetry + (counts.Poetry === 1 ? ' piece' : ' pieces');
     countOpinion.textContent = counts.Opinion + (counts.Opinion === 1 ? ' piece' : ' pieces');
     countProse.textContent = counts.Prose + (counts.Prose === 1 ? ' piece' : ' pieces');
+    countEssay.textContent = counts.Essay + (counts.Essay === 1 ? ' piece' : ' pieces');
   }
 
   // --- Format date ---
