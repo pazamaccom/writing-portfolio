@@ -81,8 +81,9 @@
 
       let tagsHTML = '';
       if (piece.tags && piece.tags.length) {
+        const displayTags = piece.tags.slice(0, 3);
         tagsHTML = '<div class="piece-card-tags">' +
-          piece.tags.map(t => '<span class="piece-card-tag">' + escapeHTML(t) + '</span>').join('') +
+          displayTags.map(t => '<span class="piece-card-tag">' + escapeHTML(t) + '</span>').join('') +
           '</div>';
       }
 
