@@ -32,7 +32,19 @@
     .about-prose { font-family: var(--font-body); font-size: 1.04rem; line-height: 1.78; color: var(--body-text); }
     .about-prose p { margin-bottom: 1.1em; }
     .about-prose p:last-child { margin-bottom: 0; }
+    .about-prose::after { content: ""; display: block; clear: both; }
     .title-em { font-style: italic; color: var(--heading); }
+
+    .about-photo {
+      float: right;
+      width: 220px;
+      max-width: 40%;
+      margin: 4px 0 14px 28px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .about-photo img { display: block; width: 100%; height: auto; }
 
     .gallery-section { padding: 16px 24px 40px; }
     .gallery-inner { max-width: 1080px; margin: 0 auto; }
@@ -90,6 +102,14 @@
     @media (max-width: 600px) {
       .gallery-grid { grid-template-columns: 1fr; gap: 16px; }
     }
+    @media (max-width: 600px) {
+      .about-photo {
+        float: none;
+        margin: 0 auto 20px;
+        width: 70%;
+        max-width: 280px;
+      }
+    }
     @media (max-width: 480px) {
       .about-section { padding: 16px 20px 40px; }
       .gallery-section { padding: 8px 20px 28px; }
@@ -129,9 +149,12 @@
   <section class="about-section" id="aboutSection">
     <div class="about-inner">
       <span class="about-eyebrow">A note from the author</span>
-      <h2 class="about-heading">About</h2>
+      <h2 class="about-heading">About me</h2>
       <div class="about-divider"></div>
       <div class="about-prose">
+        <figure class="about-photo">
+          <img src="./assets/photos/IMG_7733.jpeg" alt="Paris rooftops at sunset">
+        </figure>
         <p>
           Having lived across North America, the Middle East, Europe, and Asia, I have gathered experiences and perspectives that profoundly shape the way I view the world. Writing has become a form of preservation of these memories. This website is a collection of the works that mean the most to me.
         </p>
