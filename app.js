@@ -1,6 +1,6 @@
 /* =====================================================
    Isabella Zapparoli — Writing Portfolio
-   App Logic: Load, Filter, Reader
+   App Logic: load, country-box filtering, reader overlay
    ===================================================== */
 
 (function () {
@@ -8,25 +8,38 @@
 
   // --- State ---
   let pieces = [];
-  let activeFilter = 'all';
+  let activeCategory = null; // null = no filter (just About + boxes)
 
   // --- DOM Refs ---
-  const feedGrid       = document.getElementById('feedGrid');
-  const feedEmpty       = document.getElementById('feedEmpty');
-  const readerOverlay   = document.getElementById('readerOverlay');
-  const readerBackdrop  = document.getElementById('readerBackdrop');
-  const readerPanel     = document.getElementById('readerPanel');
-  const readerClose     = document.getElementById('readerClose');
-  const readerContent   = document.getElementById('readerContent');
-  const filterIndicator = document.getElementById('filterIndicator');
-  const filterLabel     = document.getElementById('filterLabel');
-  const filterClear     = document.getElementById('filterClear');
-  const navToggle       = document.getElementById('navToggle');
-  const navLinksEl      = document.getElementById('navLinks');
-  const countPoetry     = document.getElementById('countPoetry');
-  const countOpinion    = document.getElementById('countOpinion');
-  const countProse      = document.getElementById('countProse');
-  const countEssay      = document.getElementById('countEssay');
+  const $ = (id) => document.getElementById(id);
+  const feedSection    = $('inlineFeed');
+  const feedGrid       = $('feedGrid');
+  const feedEmpty      = $('feedEmpty');
+  const indicator      = $('filterIndicator');
+  const indicatorLabel = $('filterLabel');
+  const indicatorClear = $('filterClear');
+  const readerOverlay  = $('readerOverlay');
+  const readerBackdrop = $('readerBackdrop');
+  const readerPanel    = $('readerPanel');
+  const readerClose    = $('readerClose');
+  const readerContent  = $('readerContent');
+  const navToggle      = $('navToggle');
+  const navLinksEl     = $('navLinks');
+
+  const validCategories = ['Poetry', 'Prose', 'Opinion', 'Essay'];
+
+  // --- Helpers ---
+  function escapeHTML(str) {
+    if (!str) return '';
+    const el = document.createElement('span');
+    el.textContent = str;
+    return el.innerHTML;
+  }
+
+  function formatDate(dateStr) {
+    const d = new Date(dateStr + 'T00:00:00');
+    return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  }
 
   // --- Load Pieces ---
   async function loadPieces() {
@@ -34,42 +47,45 @@
       const res = await fetch('./content/pieces.json');
       pieces = await res.json();
       updateCounts();
-      renderFeed();
     } catch (err) {
       console.error('Failed to load pieces:', err);
-      feedGrid.innerHTML = '<p style="text-align:center;color:#8a7868;padding:40px;">Unable to load content.</p>';
     }
   }
 
-  // --- Update category counts ---
+  // --- Category counts on the gallery cards ---
   function updateCounts() {
-    const counts = { Poetry: 0, Opinion: 0, Prose: 0, Essay: 0 };
-    pieces.forEach(p => {
-      if (counts[p.category] !== undefined) counts[p.category]++;
+    const counts = { Poetry: 0, Prose: 0, Opinion: 0, Essay: 0 };
+    pieces.forEach(p => { if (counts[p.category] !== undefined) counts[p.category]++; });
+    document.querySelectorAll('[data-count]').forEach(el => {
+      const c = counts[el.dataset.count] || 0;
+      el.textContent = c + (c === 1 ? ' piece' : ' pieces');
     });
-    countPoetry.textContent = counts.Poetry + (counts.Poetry === 1 ? ' piece' : ' pieces');
-    countOpinion.textContent = counts.Opinion + (counts.Opinion === 1 ? ' piece' : ' pieces');
-    countProse.textContent = counts.Prose + (counts.Prose === 1 ? ' piece' : ' pieces');
-    countEssay.textContent = counts.Essay + (counts.Essay === 1 ? ' piece' : ' pieces');
   }
 
-  // --- Format date ---
-  function formatDate(dateStr) {
-    const d = new Date(dateStr + 'T00:00:00');
-    return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-  }
+  // --- Show pieces for a category (inline feed) ---
+  function showCategory(cat) {
+    if (!validCategories.includes(cat)) return;
+    activeCategory = cat;
 
-  // --- Render Feed ---
-  function renderFeed() {
-    const filtered = activeFilter === 'all'
-      ? pieces
-      : pieces.filter(p => p.category === activeFilter);
+    // Active states — gallery cards + nav links
+    document.querySelectorAll('.gallery-card').forEach(c => {
+      c.classList.toggle('active-card', c.dataset.filter === cat);
+    });
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.classList.toggle('active', link.dataset.filter === cat);
+    });
 
-    feedGrid.innerHTML = '';
-    feedEmpty.style.display = filtered.length === 0 ? 'block' : 'none';
+    // Indicator
+    indicator.style.display = 'block';
+    indicatorLabel.textContent = cat;
 
-    // Sort by date descending
+    // Filter + sort (date desc)
+    const filtered = pieces.filter(p => p.category === cat);
     const sorted = [...filtered].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    // Render
+    feedGrid.innerHTML = '';
+    feedEmpty.style.display = sorted.length === 0 ? 'block' : 'none';
 
     sorted.forEach((piece, i) => {
       const card = document.createElement('article');
@@ -86,25 +102,22 @@
           displayTags.map(t => '<span class="piece-card-tag">' + escapeHTML(t) + '</span>').join('') +
           '</div>';
       }
+      const subtitleHTML = piece.subtitle
+        ? '<p class="piece-card-subtitle">' + escapeHTML(piece.subtitle) + '</p>'
+        : '';
 
-      let subtitleHTML = '';
-      if (piece.subtitle) {
-        subtitleHTML = '<p class="piece-card-subtitle">' + escapeHTML(piece.subtitle) + '</p>';
-      }
-
-      card.innerHTML = `
-        <div class="piece-card-header">
-          <span class="piece-card-dot piece-card-dot--${piece.category}"></span>
-          <span class="piece-card-category piece-card-category--${piece.category}">${escapeHTML(piece.category)}</span>
-        </div>
-        <h3 class="piece-card-title">${escapeHTML(piece.title)}</h3>
-        ${subtitleHTML}
-        <p class="piece-card-excerpt">${escapeHTML(piece.excerpt)}</p>
-        <div class="piece-card-footer">
-          ${tagsHTML}
-          <span class="piece-card-date">${formatDate(piece.date)}</span>
-        </div>
-      `;
+      card.innerHTML =
+        '<div class="piece-card-header">' +
+          '<span class="piece-card-dot piece-card-dot--' + piece.category + '"></span>' +
+          '<span class="piece-card-category piece-card-category--' + piece.category + '">' + escapeHTML(piece.category) + '</span>' +
+        '</div>' +
+        '<h3 class="piece-card-title">' + escapeHTML(piece.title) + '</h3>' +
+        subtitleHTML +
+        '<p class="piece-card-excerpt">' + escapeHTML(piece.excerpt) + '</p>' +
+        '<div class="piece-card-footer">' +
+          tagsHTML +
+          '<span class="piece-card-date">' + formatDate(piece.date) + '</span>' +
+        '</div>';
 
       card.addEventListener('click', () => openReader(piece));
       card.addEventListener('keydown', (e) => {
@@ -117,63 +130,38 @@
       feedGrid.appendChild(card);
     });
 
-    // Update filter indicator
-    if (activeFilter === 'all') {
-      filterIndicator.style.display = 'none';
-    } else {
-      filterIndicator.style.display = 'block';
-      filterLabel.textContent = activeFilter;
-    }
+    feedSection.style.display = 'block';
+
+    // Smooth-scroll the indicator into view so the user lands on the filtered feed
+    setTimeout(() => indicator.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
   }
 
-  // --- Set Active Filter ---
-  function setFilter(cat) {
-    activeFilter = cat;
-
-    // Update nav links
+  // --- Clear category and return to the About + boxes view ---
+  function clearCategory() {
+    activeCategory = null;
+    document.querySelectorAll('.gallery-card').forEach(c => c.classList.remove('active-card'));
     document.querySelectorAll('.nav-link').forEach(link => {
-      link.classList.toggle('active', link.dataset.filter === cat);
+      link.classList.toggle('active', link.dataset.action === 'home');
     });
-
-    // Update category cards
-    document.querySelectorAll('.cat-card').forEach(card => {
-      card.classList.toggle('active-cat', card.dataset.filter === cat);
-    });
-
-    renderFeed();
-
-    // Close mobile nav if open
-    navLinksEl.classList.remove('open');
+    indicator.style.display = 'none';
+    feedSection.style.display = 'none';
   }
 
-  // --- Open Reader ---
+  // --- Reader Overlay ---
   function openReader(piece) {
-    let bodyHTML = '';
+    let bodyHTML;
     if (piece.category === 'Poetry') {
       bodyHTML = '<div class="reader-body poetry-body">' + escapeHTML(piece.body) + '</div>';
     } else {
-      // Split on double newlines for prose/opinion
       const paragraphs = piece.body.split(/\n\n+/);
       bodyHTML = '<div class="reader-body">' +
         paragraphs.map(p => '<p>' + escapeHTML(p.trim()) + '</p>').join('') +
         '</div>';
     }
 
-    let subtitleHTML = '';
-    if (piece.subtitle) {
-      subtitleHTML = '<p class="reader-subtitle">' + escapeHTML(piece.subtitle) + '</p>';
-    }
-
-    let authorHTML = '';
-    if (piece.authorCredit) {
-      authorHTML = '<p class="reader-author">' + escapeHTML(piece.authorCredit) + '</p>';
-    }
-
-    let submittedHTML = '';
-    if (piece.submittedTo) {
-      submittedHTML = '<p class="reader-submitted">Submitted to <em>' + escapeHTML(piece.submittedTo) + '</em></p>';
-    }
-
+    const subtitleHTML  = piece.subtitle    ? '<p class="reader-subtitle">' + escapeHTML(piece.subtitle) + '</p>' : '';
+    const authorHTML    = piece.authorCredit? '<p class="reader-author">' + escapeHTML(piece.authorCredit) + '</p>' : '';
+    const submittedHTML = piece.submittedTo ? '<p class="reader-submitted">Submitted to <em>' + escapeHTML(piece.submittedTo) + '</em></p>' : '';
     let tagsHTML = '';
     if (piece.tags && piece.tags.length) {
       tagsHTML = '<div class="reader-tags">' +
@@ -181,75 +169,74 @@
         '</div>';
     }
 
-    readerContent.innerHTML = `
-      <div class="reader-meta">
-        <span class="reader-cat-dot reader-cat-dot--${piece.category}"></span>
-        <span class="reader-category reader-category--${piece.category}">${escapeHTML(piece.category)}</span>
-        <span class="reader-date">${formatDate(piece.date)}</span>
-      </div>
-      <h2 class="reader-title">${escapeHTML(piece.title)}</h2>
-      ${subtitleHTML}
-      ${authorHTML}
-      ${submittedHTML}
-      <div class="reader-divider"></div>
-      ${bodyHTML}
-      ${tagsHTML}
-    `;
+    readerContent.innerHTML =
+      '<div class="reader-meta">' +
+        '<span class="reader-cat-dot reader-cat-dot--' + piece.category + '"></span>' +
+        '<span class="reader-category reader-category--' + piece.category + '">' + escapeHTML(piece.category) + '</span>' +
+        '<span class="reader-date">' + formatDate(piece.date) + '</span>' +
+      '</div>' +
+      '<h2 class="reader-title">' + escapeHTML(piece.title) + '</h2>' +
+      subtitleHTML + authorHTML + submittedHTML +
+      '<div class="reader-divider"></div>' +
+      bodyHTML +
+      tagsHTML;
 
     readerOverlay.classList.add('open');
     document.body.classList.add('overlay-open');
     readerPanel.scrollTop = 0;
-
-    // Focus the close button for accessibility
     setTimeout(() => readerClose.focus(), 100);
   }
 
-  // --- Close Reader ---
   function closeReader() {
     readerOverlay.classList.remove('open');
     document.body.classList.remove('overlay-open');
   }
 
-  // --- Escape HTML ---
-  function escapeHTML(str) {
-    if (!str) return '';
-    const el = document.createElement('span');
-    el.textContent = str;
-    return el.innerHTML;
+  // --- Hash deep-linking (e.g. #Poetry) ---
+  function applyHashFilter() {
+    const hash = decodeURIComponent(window.location.hash.slice(1));
+    if (validCategories.includes(hash)) {
+      showCategory(hash);
+    }
   }
 
-  // --- Event Listeners ---
+  // --- Wire interactions ---
 
-  // Nav links
-  document.querySelectorAll('.nav-link').forEach(link => {
+  // Gallery cards (the 4 country boxes)
+  document.querySelectorAll('.gallery-card').forEach(card => {
+    card.addEventListener('click', (e) => {
+      e.preventDefault();
+      const cat = card.dataset.filter;
+      if (activeCategory === cat) {
+        clearCategory();
+      } else {
+        showCategory(cat);
+      }
+      navLinksEl && navLinksEl.classList.remove('open');
+    });
+  });
+
+  // Nav category links (Poetry / Prose / Opinion / Essays)
+  document.querySelectorAll('.nav-link[data-filter]').forEach(link => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
-      setFilter(link.dataset.filter);
+      showCategory(link.dataset.filter);
+      navLinksEl && navLinksEl.classList.remove('open');
     });
   });
 
-  // Nav brand (go home)
-  document.querySelector('.nav-brand').addEventListener('click', (e) => {
-    e.preventDefault();
-    setFilter('all');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-
-  // Category cards
-  document.querySelectorAll('.cat-card').forEach(card => {
-    card.addEventListener('click', () => {
-      const cat = card.dataset.filter;
-      // If already active, toggle off (go back to all)
-      if (activeFilter === cat) {
-        setFilter('all');
-      } else {
-        setFilter(cat);
-      }
+  // Brand + Home — return to the About + boxes view
+  document.querySelectorAll('[data-action="home"]').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      clearCategory();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      navLinksEl && navLinksEl.classList.remove('open');
     });
   });
 
-  // Filter clear
-  filterClear.addEventListener('click', () => setFilter('all'));
+  // Indicator clear button
+  if (indicatorClear) indicatorClear.addEventListener('click', clearCategory);
 
   // Reader close
   readerClose.addEventListener('click', closeReader);
@@ -263,17 +250,26 @@
   });
 
   // Mobile nav toggle
-  navToggle.addEventListener('click', () => {
-    navLinksEl.classList.toggle('open');
-  });
+  if (navToggle) {
+    navToggle.addEventListener('click', () => navLinksEl.classList.toggle('open'));
+  }
 
-  // Close mobile nav when clicking outside
+  // Close mobile nav when clicking outside the top nav
   document.addEventListener('click', (e) => {
-    if (!e.target.closest('.top-nav')) {
+    if (!e.target.closest('.top-nav') && navLinksEl) {
       navLinksEl.classList.remove('open');
     }
   });
 
+  // Hash change (browser back/forward)
+  window.addEventListener('hashchange', () => {
+    if (window.location.hash) {
+      applyHashFilter();
+    } else {
+      clearCategory();
+    }
+  });
+
   // --- Init ---
-  loadPieces();
+  loadPieces().then(applyHashFilter);
 })();
