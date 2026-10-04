@@ -3,17 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Art — Isabella Zapparoli</title>
+  <title>Discovering interpersonal relationships — Isabella Zapparoli</title>
   <meta name="robots" content="noindex">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../style.css">
+  <script>document.documentElement.classList.add('js');</script>
   <style>
     /* === Art page: single video with a tap-to-play overlay === */
 
-    .art-section { padding: 40px 24px 64px; }
+    .art-section { padding: 48px 24px 64px; }
     .art-inner { max-width: 960px; margin: 0 auto; }
+
+    .art-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4.6vw, 3.2rem);
+      font-weight: 600; color: var(--heading);
+      line-height: 1.2; letter-spacing: -0.01em;
+      text-align: center;
+    }
+    .art-divider {
+      width: 36px; height: 2px; border: 0; background: var(--accent);
+      border-radius: 1px; margin: 18px auto 36px;
+    }
 
     .video-frame {
       position: relative;
@@ -49,10 +62,105 @@
     .play-overlay:hover .play-icon { transform: scale(1.06); }
     .play-icon svg { width: 34px; height: 34px; margin-left: 6px; fill: var(--header-bg); }
 
+    /* === Artworks: a small gallery wall below the video === */
+
+    .artworks-section { padding: 0 24px 96px; }
+    .artworks-inner { max-width: 960px; margin: 0 auto; }
+
+    .artworks-eyebrow {
+      display: block; font-family: var(--font-body);
+      font-size: 0.78rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.16em; color: var(--accent);
+      text-align: center;
+    }
+    .artworks-rule {
+      width: 48px; height: 1px; border: 0;
+      background: var(--accent); margin: 14px auto 64px;
+    }
+
+    .gallery-wall {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      column-gap: 32px; row-gap: 88px;
+      align-items: start;
+    }
+    .artwork { margin: 0; }
+    .artwork--motherhood    { grid-column: 1 / span 6; }
+    .artwork--phases        { grid-column: 7 / span 6; align-self: center; }
+    .artwork--stuck         { grid-column: 2 / span 5; }
+    .artwork--parallel      { grid-column: 7 / span 5; margin-top: 72px; }
+
+    .artwork-frame {
+      display: block; width: 100%; padding: clamp(12px, 2.4vw, 26px);
+      background: #fdfbf7;
+      border: 5px solid var(--heading);
+      box-shadow: var(--shadow-lg);
+      cursor: zoom-in;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .artwork-frame:hover { transform: translateY(-4px); box-shadow: 0 14px 40px rgba(90, 60, 30, 0.18); }
+    .artwork-frame:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+    .artwork-frame img {
+      display: block; width: 100%; height: auto;
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.08);
+    }
+
+    .artwork figcaption { margin-top: 18px; padding-left: 2px; }
+    .artwork-title {
+      display: block; font-family: var(--font-display);
+      font-style: italic; font-weight: 500;
+      font-size: 1.45rem; line-height: 1.2; color: var(--heading);
+    }
+    .artwork-artist {
+      display: block; margin-top: 4px;
+      font-size: 0.72rem; font-weight: 500; text-transform: uppercase;
+      letter-spacing: 0.14em; color: var(--muted);
+    }
+
+    /* Gentle reveal as each piece scrolls into view (only when JS runs) */
+    .js .artwork { opacity: 0; transform: translateY(24px); transition: opacity 0.8s ease, transform 0.8s ease; }
+    .js .artwork.is-visible { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .js .artwork { opacity: 1; transform: none; transition: none; }
+    }
+
+    /* Lightbox */
+    .lightbox {
+      border: 0; padding: 0; background: transparent;
+      max-width: 100vw; max-height: 100vh; width: 100vw; height: 100vh;
+    }
+    .lightbox::backdrop { background: rgba(30, 18, 12, 0.88); }
+    .lightbox-inner {
+      height: 100%; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 16px;
+      padding: 24px; cursor: zoom-out;
+    }
+    .lightbox img { max-width: 100%; max-height: calc(100vh - 110px); box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4); }
+    .lightbox-title {
+      font-family: var(--font-display); font-style: italic;
+      font-size: 1.4rem; color: var(--bg-warm);
+    }
+    .lightbox-close {
+      position: absolute; top: 14px; right: 18px;
+      border: 0; background: none; cursor: pointer;
+      font-size: 2rem; line-height: 1; color: var(--bg-warm);
+    }
+
+    @media (max-width: 760px) {
+      .gallery-wall { grid-template-columns: 1fr; row-gap: 56px; }
+      .artwork--motherhood, .artwork--phases,
+      .artwork--stuck, .artwork--parallel {
+        grid-column: 1; margin-top: 0;
+        width: 100%; max-width: 440px; justify-self: center;
+      }
+    }
+
     @media (max-width: 600px) {
       .art-section { padding: 20px 12px 40px; }
       .play-icon { width: 68px; height: 68px; }
       .play-icon svg { width: 26px; height: 26px; }
+      .artworks-section { padding: 8px 16px 64px; }
+      .artworks-rule { margin-bottom: 40px; }
     }
   </style>
 </head>
@@ -67,6 +175,9 @@
 
   <main class="art-section">
     <div class="art-inner">
+      <h1 class="art-title">Discovering interpersonal relationships</h1>
+      <hr class="art-divider">
+
       <div class="video-frame">
         <video id="artVideo" src="./video.mp4" playsinline preload="auto"></video>
         <button class="play-overlay" id="playOverlay" aria-label="Play video" hidden>
@@ -77,6 +188,63 @@
       </div>
     </div>
   </main>
+
+  <section class="artworks-section" aria-labelledby="artworksHeading">
+    <div class="artworks-inner">
+      <span class="artworks-eyebrow" id="artworksHeading">The artworks</span>
+      <hr class="artworks-rule">
+
+      <div class="gallery-wall">
+        <figure class="artwork artwork--motherhood">
+          <button class="artwork-frame" type="button" aria-label="View Motherhood larger">
+            <img src="./artworks/motherhood.jpeg" alt="Motherhood — a coloured-pencil drawing in soft pinks of a woman with glasses cradling a sleeping baby" width="1290" height="1692" loading="lazy">
+          </button>
+          <figcaption>
+            <span class="artwork-title">Motherhood</span>
+            <span class="artwork-artist">Isabella Zapparoli</span>
+          </figcaption>
+        </figure>
+
+        <figure class="artwork artwork--phases">
+          <button class="artwork-frame" type="button" aria-label="View Phases larger">
+            <img src="./artworks/phases.jpeg" alt="Phases — layered translucent sheets with pink-tinted line drawings of overlapping figures" width="1290" height="840" loading="lazy">
+          </button>
+          <figcaption>
+            <span class="artwork-title">Phases</span>
+            <span class="artwork-artist">Isabella Zapparoli</span>
+          </figcaption>
+        </figure>
+
+        <figure class="artwork artwork--stuck">
+          <button class="artwork-frame" type="button" aria-label="View Stuck in Time larger">
+            <img src="./artworks/stuck-in-time.jpeg" alt="Stuck in Time — a graphite drawing of a wristwatch whose face is filled with flowers and sleeping faces" width="1290" height="1841" loading="lazy">
+          </button>
+          <figcaption>
+            <span class="artwork-title">Stuck in Time</span>
+            <span class="artwork-artist">Isabella Zapparoli</span>
+          </figcaption>
+        </figure>
+
+        <figure class="artwork artwork--parallel">
+          <button class="artwork-frame" type="button" aria-label="View Parallel Time larger">
+            <img src="./artworks/parallel-time.jpeg" alt="Parallel Time — a black-and-white print of two mirrored watch faces filled with flowers and faces" width="1290" height="1837" loading="lazy">
+          </button>
+          <figcaption>
+            <span class="artwork-title">Parallel Time</span>
+            <span class="artwork-artist">Isabella Zapparoli</span>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <dialog class="lightbox" id="lightbox" aria-label="Artwork">
+    <button class="lightbox-close" type="button" aria-label="Close">&times;</button>
+    <div class="lightbox-inner">
+      <img id="lightboxImg" alt="">
+      <span class="lightbox-title" id="lightboxTitle"></span>
+    </div>
+  </dialog>
 
   <script>
     (function () {
@@ -101,6 +269,43 @@
       overlay.addEventListener('click', function () {
         startPlayback().catch(showOverlay);
       });
+    })();
+
+    (function () {
+      var artworks = document.querySelectorAll('.artwork');
+
+      // Reveal each artwork as it scrolls into view
+      if ('IntersectionObserver' in window) {
+        var observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.15 });
+        artworks.forEach(function (el) { observer.observe(el); });
+      } else {
+        artworks.forEach(function (el) { el.classList.add('is-visible'); });
+      }
+
+      // Lightbox: click an artwork to see it larger
+      var lightbox = document.getElementById('lightbox');
+      var lightboxImg = document.getElementById('lightboxImg');
+      var lightboxTitle = document.getElementById('lightboxTitle');
+      if (!lightbox.showModal) return;
+
+      artworks.forEach(function (el) {
+        el.querySelector('.artwork-frame').addEventListener('click', function () {
+          var img = el.querySelector('img');
+          lightboxImg.src = img.src;
+          lightboxImg.alt = img.alt;
+          lightboxTitle.textContent = el.querySelector('.artwork-title').textContent;
+          lightbox.showModal();
+        });
+      });
+
+      lightbox.addEventListener('click', function () { lightbox.close(); });
     })();
   </script>
 
