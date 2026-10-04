@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Art — Isabella Zapparoli</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    /* === Art page: single video with a tap-to-play overlay === */
+
+    .art-section { padding: 40px 24px 64px; }
+    .art-inner { max-width: 960px; margin: 0 auto; }
+
+    .video-frame {
+      position: relative;
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: #000;
+      box-shadow: var(--shadow-lg);
+    }
+    .video-frame video {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 80vh;
+    }
+
+    .play-overlay {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      border: 0; cursor: pointer;
+      background: rgba(58, 34, 24, 0.35);
+      transition: background var(--transition), opacity var(--transition);
+    }
+    .play-overlay:hover { background: rgba(58, 34, 24, 0.2); }
+    .play-overlay[hidden] { display: none; }
+
+    .play-icon {
+      width: 88px; height: 88px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(250, 246, 240, 0.92);
+      box-shadow: var(--shadow-md);
+      transition: transform var(--transition);
+    }
+    .play-overlay:hover .play-icon { transform: scale(1.06); }
+    .play-icon svg { width: 34px; height: 34px; margin-left: 6px; fill: var(--header-bg); }
+
+    @media (max-width: 600px) {
+      .art-section { padding: 20px 12px 40px; }
+      .play-icon { width: 68px; height: 68px; }
+      .play-icon svg { width: 26px; height: 26px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP NAV (brand only; this page is not linked from the main menu) -->
+  <nav class="top-nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">Isabella Zapparoli</a>
+    </div>
+  </nav>
+
+  <main class="art-section">
+    <div class="art-inner">
+      <div class="video-frame">
+        <video id="artVideo" src="./video.mp4" playsinline preload="auto"></video>
+        <button class="play-overlay" id="playOverlay" aria-label="Play video" hidden>
+          <span class="play-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4l15 8-15 8z"/></svg>
+          </span>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      var video = document.getElementById('artVideo');
+      var overlay = document.getElementById('playOverlay');
+
+      function showOverlay() {
+        overlay.hidden = false;
+        video.controls = false;
+      }
+
+      function startPlayback() {
+        overlay.hidden = true;
+        video.controls = true;
+        return video.play();
+      }
+
+      // Try to start with sound right away; browsers usually block this,
+      // in which case the overlay asks for a single tap.
+      startPlayback().catch(showOverlay);
+
+      overlay.addEventListener('click', function () {
+        startPlayback().catch(showOverlay);
+      });
+    })();
+  </script>
+
+</body>
+</html>
